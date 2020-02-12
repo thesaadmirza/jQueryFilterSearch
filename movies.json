@@ -1,0 +1,52 @@
+[
+  {
+    "Movie ID": 1,
+    "Title": "A Space Odyssey",
+    "language": "English",
+    "Rating": 8.3,
+    "Country": "Greece",
+    "Poster": "image01",
+    "duration": "149 min",
+    "release date": 2001
+  },
+  {
+    "Movie ID": 2,
+    "Title": "Amadeus",
+    "language": "English",
+    "Rating": 8.3,
+    "Country": "UK",
+    "Poster": "image02",
+    "duration": "160 min",
+    "release date": 1984
+  },
+  {
+    "Movie ID": 3,
+    "Title": "American Beuty",
+    "language": "English",
+    "Rating": 8.2,
+    "Country": "USA",
+    "Poster": "image03",
+    "duration": "122 min",
+    "release date": 1999
+  },
+  {
+    "Movie ID": 4,
+    "Title": "The Godfather",
+    "language": "Italian",
+    "Rating": 9.2,
+    "Country": "USA",
+    "Poster": "image04",
+    "duration": "315 min",
+    "release date": 1972
+  },
+  {
+    "Movie ID": 5,
+    "Title": "Spirited Away",
+    "language": "Japaneese",
+    "Rating": 8.6,
+    "Country": "Japan",
+    "Poster": "image05",
+    "duration": "125 min",
+    "release date": 2001
+  }
+]

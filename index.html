@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      #myInput {
+        background-position: 10px 12px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+      }
+
+      #myUL {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      #myUL li a {
+        border: 1px solid #ddd;
+        margin-top: -1px; /* Prevent double borders */
+        background-color: #f6f6f6;
+        padding: 12px;
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+        display: block;
+      }
+
+      #myUL li a:hover:not(.header) {
+        background-color: #eee;
+      }
+
+      .active,
+      .collapsible:hover {
+        background-color: #555;
+      }
+      .hidden {
+        display: none;
+      }
+      .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Movies</h2>
+
+    <input
+      type="text"
+      id="myInput"
+      placeholder="Search for Title,Country,Language, Rating, Duration.."
+      title="Type in a Title,Country,Language, Rating, Duration "
+    />
+
+    <ul id="myUL"></ul>
+
+    <script>
+      function myFunction() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
+      $(function() {
+        $.ajax({
+          url: "movies.json",
+          dataType: "json",
+          success: function(data) {
+            var newitems = [];
+            $.each(data, function(key, val) {
+              var id = "Movie ID";
+              var date = "release date";
+              newitems.push(
+                '<li data-filter-item data-filter-name="' +
+                  val.Title.toLowerCase() +
+                  '" data-filter-language="' +
+                  val.language +
+                  '" data-filter-id="' +
+                  val[id] +
+                  '"  data-filter-date="' +
+                  val[date] +
+                  '" data-filter-country="' +
+                  val.Country.toLowerCase() +
+                  '" data-filter-duration="' +
+                  val.duration +
+                  '" data-filter-rating="' +
+                  val.Rating +
+                  '" ><div class="header"><a href="javascript:void(0)"  >' +
+                  val.Title +
+                  '</a></div><div class="content"><p><h3><b>Movie ID: ' +
+                  val[id] +
+                  "</b></h3></p><p>Movie Name : " +
+                  val.Title +
+                  "</p><p>Language :  " +
+                  val.language +
+                  "</p><p>Country : " +
+                  val.Country +
+                  "</p><p>Poster : " +
+                  val.Poster +
+                  "</p><p>Duration : " +
+                  val.duration +
+                  "</p><p>Rating : " +
+                  val.Rating +
+                  "</p><p>release date: " +
+                  val[date] +
+                  "</p></div></li>"
+              );
+            });
+
+            $("#myUL").append(newitems);
+          },
+          complete: function() {
+            $(".header").click(function() {
+              $header = $(this);
+              //getting the next element
+              $content = $header.next();
+              //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+              $content.slideToggle(500, function() {});
+            });
+          },
+          statusCode: {
+            404: function() {
+              alert("There was a problem with the server.  Try again soon!");
+            }
+          }
+        });
+
+        $("#myInput").on("keyup", function() {
+          var searchVal = $(this).val();
+          console.log(searchVal);
+          searchVal  = searchVal.toLowerCase();
+          var filterItems = $("[data-filter-item]");
+
+          if (searchVal != "") {
+            filterItems.addClass("hidden");
+            $(
+              '[data-filter-item][data-filter-name*="' + searchVal + '"]'
+            ).removeClass("hidden");
+            $(
+              '[data-filter-item][data-filter-duration*="' + searchVal + '"]'
+            ).removeClass("hidden");
+            $(
+              '[data-filter-item][data-filter-date*="' + searchVal + '"]'
+            ).removeClass("hidden");
+            $(
+              '[data-filter-item][data-filter-id*="' + searchVal + '"]'
+            ).removeClass("hidden");
+            $(
+              '[data-filter-item][data-filter-country*="' + searchVal + '"]'
+            ).removeClass("hidden");
+            $(
+              '[data-filter-item][data-filter-language*="' + searchVal + '"]'
+            ).removeClass("hidden");
+            $(
+              '[data-filter-item][data-filter-rating*="' + searchVal + '"]'
+            ).removeClass("hidden");
+          } else {
+            filterItems.removeClass("hidden");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
